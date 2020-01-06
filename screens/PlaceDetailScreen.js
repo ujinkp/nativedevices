@@ -9,6 +9,12 @@ import { View, Text, StyleSheet } from 'react-native';
       );
  };
 
+ PlaceDetailScreen.navigationOptions = navData => {
+   return {
+     headerTitle: navData.navigation.getParam('placeTitle')
+   };
+ };
+
  const styles = StyleSheet.create({});
 
  export default PlaceDetailScreen;
