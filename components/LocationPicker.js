@@ -34,8 +34,8 @@ const LocationPicker = props => {
 		const hasPermission = await verifyPermissions();
 		if (!hasPermission) {
 			return;
-        }
-        
+		}
+
 		try {
 			setIsFetching(true);
 			const location = await Location.getCurrentPositionAsync({
@@ -45,7 +45,7 @@ const LocationPicker = props => {
 			setPickedLocation({
 				lat: location.coords.latitude,
 				lng: location.coords.longitude
- 			});
+			});
 		} catch (err) {
 			Alert.alert(
 				'Could not fetch location!',
@@ -56,20 +56,35 @@ const LocationPicker = props => {
 		setIsFetching(false);
 	};
 
+	const pickOnMapHandler = () => {
+		props.navigation.navigate('Map');
+	};
+
 	return (
 		<View style={styles.locationPicker}>
-			<MapPreview style={styles.mapPreview} location={pickedLocation}>
+			<MapPreview
+				style={styles.mapPreview}
+				location={pickedLocation}
+				onPress={pickOnMapHandler}
+			>
 				{isFetching ? (
 					<ActivityIndicator size="large" color={Colors.primary} />
 				) : (
 					<Text>No location chosen yet!</Text>
 				)}
 			</MapPreview>
-			<Button
-				title="Get User Location"
-				color={Colors.primary}
-				onPress={getLocationHandler}
-			/>
+			<View style={styles.actions}>
+				<Button
+					title="Get User Location"
+					color={Colors.primary}
+					onPress={getLocationHandler}
+				/>
+				<Button
+					title="Pick on Map"
+					color={Colors.primary}
+					onPress={pickOnMapHandler}
+				/>
+			</View>
 		</View>
 	);
 };
@@ -83,7 +98,12 @@ const styles = StyleSheet.create({
 		width: '100%',
 		height: 150,
 		borderColor: '#ccc',
-        borderWidth: 1
+		borderWidth: 1
+	},
+	actions: {
+		flexDirection: 'row',
+		justifyContent: 'space-around',
+		width: '100%'
 	}
 });
 
