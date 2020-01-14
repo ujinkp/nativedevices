@@ -3,12 +3,19 @@ import { ScrollView, Image, View, Text, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import MapPreview from '../components/MapPreview';
+import Colors from '../constants/Colors';
 
 const PlaceDetailScreen = props => {
 	const placeId = props.navigation.getParam('placeId');
 	const selectedPlace = useSelector(state =>
 		state.places.places.find(place => place.id === placeId)
 	);
+
+	const selectedLocation = {lat: selectedPlace.lat, lng: selectedPlace.lng}
+
+	const showMapHandler = () => {
+		props.navigation.navigate('Map', {readonly: true, initialLocation: selectedLocation});
+	};
 
 	return (
 		<ScrollView contentContainerStyle={{alignItems: 'center'}}>
@@ -22,10 +29,8 @@ const PlaceDetailScreen = props => {
 				</View>
 				<MapPreview
 					style={styles.mapPreview}
-					location={{
-						lat: selectedPlace.lat,
-						lng: selectedPlace.lng
-					}}
+					location={selectedLocation}
+					onPress={showMapHandler}
 				/>
 			</View>
 		</ScrollView>
