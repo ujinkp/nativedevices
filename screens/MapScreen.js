@@ -48,7 +48,7 @@ const MapScreen = props => {
 	MapScreen.navigationOptions = navData => {
 		const saveFn = navData.navigation.getParam('saveLocation');
 		return {
-			headerRight: (
+			headerRight: () => (
 				<TouchableOpacity style={styles.headerButton} onPress={saveFn}>
 					<Text style={styles.headerButtonText}>Save</Text>
 				</TouchableOpacity>

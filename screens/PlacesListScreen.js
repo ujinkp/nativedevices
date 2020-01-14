@@ -39,17 +39,18 @@ const PlacesListScreen = props => {
 PlacesListScreen.navigationOptions = navData => {
 	return {
 		headerTitle: 'All Places',
-		headerRight: (
+		headerRight: () => (
 			<HeaderButtons HeaderButtonComponent={HeaderButton}>
 				<Item
-					title="Add Place"
-					iconName={Platform.OS === 'android' ? 'md-add' : 'ios-add'}
-					onPress={() => {
-						navData.navigation.navigate('NewPlace');
+					 title="Add Place"
+					 iconName={Platform.OS === "android" ? "md-add" : "ios-add"}
+					 onPress={() => {
+					 navData.navigation.navigate('NewPlace');
 					}}
 				/>
 			</HeaderButtons>
 		)
+		
 	};
 };
 
