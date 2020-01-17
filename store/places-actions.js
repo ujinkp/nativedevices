@@ -9,9 +9,7 @@ export const SET_PLACES = 'SET_PLACES';
 export const addPlace = (title, image, location) => {
 	return async dispatch => {
 		const response = await fetch(
-			`https://maps.googleapis.com/maps/api/geocode/json?latlng=${
-				location.lat
-			},${location.lng}&key=${ENV.googleApiKey}`
+			`https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.lat},${location.lng}&key=${ENV.googleApiKey}`
 		);
 
 		if (!response.ok) {
@@ -19,11 +17,12 @@ export const addPlace = (title, image, location) => {
 		}
 
 		const resData = await response.json();
-		if (!resData.result) {
-			throw new Error('Something went wrong');
+		if (!resData.results) {
+			throw new Error('Something went wrong!');
 		}
 
 		const address = resData.results[0].formatted_address;
+
 		const fileName = image.split('/').pop();
 		const newPath = FileSystem.documentDirectory + fileName;
 
@@ -40,21 +39,21 @@ export const addPlace = (title, image, location) => {
 				location.lng
 			);
 			console.log(dbResult);
+
+			dispatch({
+				type: ADD_PLACE,
+				placeData: {
+					id: dbResult.insertId,
+					title: title,
+					image: newPath,
+					address: address,
+					coords: { lat: location.lat, lng: location.lng }
+				}
+			});
 		} catch (err) {
 			console.log(err);
 			throw err;
 		}
-
-		dispatch({
-			type: ADD_PLACE,
-			placeData: {
-				id: dbResult.insertId,
-				title: title,
-				image: newPath,
-				address: address,
-				coords: { lat: location.lat, lng: location.lng }
-			}
-		});
 	};
 };
 
